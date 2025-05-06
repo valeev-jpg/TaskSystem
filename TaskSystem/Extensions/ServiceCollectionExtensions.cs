@@ -66,7 +66,7 @@ public static class ServiceCollectionExtensions
                 .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Verbose)
             )
             .WriteTo.Logger(lc => lc
-                .WriteTo.File($"Logs{Path.DirectorySeparatorChar}OpcUaClientAppLog-.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File($"Logs{Path.DirectorySeparatorChar}AppLog-.txt", rollingInterval: RollingInterval.Day)
             )
             .CreateLogger();
         
