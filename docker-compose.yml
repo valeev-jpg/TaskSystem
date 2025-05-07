@@ -5,7 +5,7 @@
       context: .
       dockerfile: TaskSystem/Dockerfile
     environment:
-      ConnectionStrings__EntityContext: Server=postgres;Port=5432;Database=agent;User Id=postgres;Password=postgres;Pooling=true;Maximum Pool Size=20;
+      ConnectionStrings__EntityContext: Server=postgres;Port=5432;Database=DB;User Id=postgres;Password=postgres;Pooling=true;Maximum Pool Size=20;
     networks:
       - my_network
     ports:
@@ -16,7 +16,7 @@
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: agent
+      POSTGRES_DB: DB
       PGDATA: /var/lib/postgresql/data
     ports:
       - "5432:5432"

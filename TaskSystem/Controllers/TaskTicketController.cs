@@ -107,7 +107,40 @@ public class TaskTicketController(IMapper mapper, ITaskTicketCrudProvider crudPr
         
         return obj.Id;
     }
-    
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<Guid>> Complete(TaskTicketUpdateModel objModel)
+    {
+        var obj = mapper.Map<TaskTicket>(objModel);
+
+        await ValidateAndChangeModelStateAsync(validator, obj, CancellationToken.None);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await crudProvider.Update(obj,
+            o => o.Title,
+            o => o.Description,
+            o => o.Due,
+            o => o.Priority,
+            o => o.Status,
+            o => o.Assignee,
+            o => o.Archived);
+
+        var by = User.FindFirstValue(ClaimTypes.Name) ?? "unknown";
+
+        await taskHistoryCrudProvider.Create(new TaskHistory
+        {
+            TaskTicketId = obj.Id,
+            Action = "Обновление тикета",
+            By = by,
+            At = DateTime.UtcNow
+        });
+
+        return obj.Id;
+    }
+
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<Guid>> Delete(Guid id)

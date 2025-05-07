@@ -45,13 +45,13 @@ export default function TasksPage() {
   const bulkArchive = () =>
     Promise.all(Array.from(sel).map(id => {
       const t = tasks.find(x => x.id === id)!;
-      return api.post("/TaskTicket/Update", { ...t, archived: true });
+      return api.put("/TaskTicket/Update", { ...t, archived: true });
     })).then(() => { setSel(new Set()); load(); });
 
   const bulkComplete = () =>
     Promise.all(Array.from(sel).map(id => {
       const t = tasks.find(x => x.id === id)!;
-      return api.post("/TaskTicket/Update", { ...t, status: "Completed" });
+      return api.put("/TaskTicket/Update", { ...t, status: "Completed" });
     })).then(() => { setSel(new Set()); load(); });
 
   return (
@@ -88,10 +88,10 @@ export default function TasksPage() {
             }}
             onAction={act => {
               if (act === "edit") { setEdit(t); setOpen(true); }
-              if (act === "archive") api.post("/TaskTicket/Update", { ...t, archived: true }).then(load);
+              if (act === "archive") api.put("/TaskTicket/Update", { ...t, archived: true }).then(load);
               if (act === "delete") api.delete(`/TaskTicket/Delete?id=${t.id}`).then(load);
-              if (act === "done") api.post("/TaskTicket/Update", { ...t, status: "Completed" }).then(load);
-              if (act === "start") api.post("/TaskTicket/Update", { ...t, status: "InProgress" }).then(load);
+              if (act === "done") api.put("/TaskTicket/Update", { ...t, status: "Completed" }).then(load);
+              if (act === "start") api.put("/TaskTicket/Update", { ...t, status: "InProgress" }).then(load);
             }} />
         ))}
       </div>
