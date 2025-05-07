@@ -1,0 +1,31 @@
+﻿services:
+  tasksystem:
+    image: tasksystem
+    build:
+      context: .
+      dockerfile: TaskSystem/Dockerfile
+    environment:
+      ConnectionStrings__EntityContext: Server=postgres;Port=5432;Database=agent;User Id=postgres;Password=postgres;Pooling=true;Maximum Pool Size=20;
+    networks:
+      - my_network
+    ports:
+      - "5137:5137"
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: agent
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    volumes:
+      - mydata:/var/lib/postgresql/data
+    networks:
+      - my_network
+volumes:
+  mydata:
+networks:
+  my_network:
+
